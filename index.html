@@ -32,13 +32,20 @@
         }
 
         @keyframes fadeIn {
-            from {
+            0% {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(20px) scaleY(0.3);
+                max-height: 0;
             }
-            to {
+            50% {
+                opacity: 0;
+                transform: translateY(20px) scaleY(1);
+                max-height: 100%;
+            }
+            100% {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scaleY(1);
+                max-height: 100%;
             }
         }
 
@@ -113,13 +120,23 @@
         }
 
         @keyframes slideIn {
-            from {
+            0% {
                 opacity: 0;
-                transform: translateX(-20px);
+                transform: translateX(-20px) scaleY(0);
+                max-height: 0;
+                margin-bottom: 0;
             }
-            to {
+            50% {
+                opacity: 0;
+                transform: translateX(-20px) scaleY(1);
+                max-height: 100px;
+                margin-bottom: 12px;
+            }
+            100% {
                 opacity: 1;
-                transform: translateX(0);
+                transform: translateX(0) scaleY(1);
+                max-height: 100px;
+                margin-bottom: 12px;
             }
         }
 
@@ -128,11 +145,23 @@
         }
 
         @keyframes slideOut {
-            to {
+            0% {
+                opacity: 1;
+                transform: translateX(0) scaleY(1);
+                max-height: 100px;
+                margin-bottom: 12px;
+            }
+            50% {
                 opacity: 0;
-                transform: translateX(20px);
-                margin-bottom: 0;
+                transform: translateX(20px) scaleY(1);
+                max-height: 100px;
+                margin-bottom: 12px;
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(20px) scaleY(0);
                 max-height: 0;
+                margin-bottom: 0;
                 overflow: hidden;
             }
         }
@@ -203,13 +232,20 @@
         }
 
         @keyframes fadeInScale {
-            from {
+            0% {
                 opacity: 0;
-                transform: scale(0.95);
+                transform: scale(0.95) scaleY(0);
+                max-height: 0;
             }
-            to {
+            50% {
+                opacity: 0;
+                transform: scale(0.95) scaleY(1);
+                max-height: 500px;
+            }
+            100% {
                 opacity: 1;
-                transform: scale(1);
+                transform: scale(1) scaleY(1);
+                max-height: 500px;
             }
         }
 
