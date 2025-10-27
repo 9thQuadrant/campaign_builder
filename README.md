@@ -1,5 +1,7 @@
 # Campaign URL Builder 🚀
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/b2c4ed18-30b2-46e9-9314-9f0d0e33cf89/deploy-status)](https://app.netlify.com/projects/custom-campaign-builder/deploys)
+
 A free, open-source, single-page **Campaign URL Builder** tool for creating custom marketing campaign URLs with dynamic UTM parameters and query strings. Built with pure vanilla JavaScript - no frameworks, no dependencies!
 
 ## 🎯 What is a Campaign URL Builder?
@@ -22,12 +24,17 @@ A Campaign URL Builder is a tool that helps marketers, advertisers, and web anal
 
 ## 🚀 Quick Start
 
-### Option 1: Direct Use
+### Option 1: Use Online (Recommended)
+**🌐 Live Demo: [https://custom-campaign-builder.netlify.app/](https://custom-campaign-builder.netlify.app/)**
+
+No installation needed! Access the tool instantly in your browser.
+
+### Option 2: Direct Use
 1. Download `campaign-builder.html`
 2. Open it in any web browser
 3. Start building campaign URLs!
 
-### Option 2: Host It
+### Option 2: Host It Yourself
 ```bash
 # Serve locally with Python
 python3 -m http.server 8000
