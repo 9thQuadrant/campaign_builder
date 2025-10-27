@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign URL Builder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #000000;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(255, 255, 255, 0.1);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="url"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="url"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .params-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .params-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .params-header h2 {
+            color: #333;
+            font-size: 20px;
+        }
+
+        .param-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 12px;
+            margin-bottom: 12px;
+            align-items: start;
+            animation: slideIn 0.3s ease-out;
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .param-row.removing {
+            animation: slideOut 0.3s ease-out forwards;
+        }
+
+        @keyframes slideOut {
+            to {
+                opacity: 0;
+                transform: translateX(20px);
+                margin-bottom: 0;
+                max-height: 0;
+                overflow: hidden;
+            }
+        }
+
+        .param-row input {
+            width: 100%;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #218838;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            padding: 12px;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-danger:disabled {
+            background: #e0e0e0;
+            cursor: not-allowed;
+        }
+
+        .preview-section {
+            background: #fff9e6;
+            border: 2px solid #ffd966;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            animation: fadeInScale 0.4s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .preview-section h3 {
+            color: #333;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .preview-url {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            word-break: break-all;
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            border: 1px solid #ffd966;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        .icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 24px;
+            }
+
+            .param-row {
+                grid-template-columns: 1fr;
+            }
+
+            .param-row button {
+                justify-self: start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Campaign URL Builder</h1>
+        <p class="subtitle">Build custom campaign URLs with dynamic query parameters</p>
+
+        <form id="campaignForm">
+            <div class="form-group">
+                <label for="baseUrl">
+                    Website URL *
+                </label>
+                <input 
+                    type="url" 
+                    id="baseUrl" 
+                    placeholder="https://example.com" 
+                    required
+                >
+            </div>
+
+            <div class="params-section">
+                <div class="params-header">
+                    <h2>Query Parameters</h2>
+                    <button type="button" class="btn btn-secondary" id="addParamBtn">
+                        + Add Parameter
+                    </button>
+                </div>
+                <div id="paramsContainer">
+                    <!-- Dynamic parameters will be added here -->
+                </div>
+                <div id="emptyState" class="empty-state">
+                    No parameters yet. Click "Add Parameter" to get started.
+                </div>
+            </div>
+
+            <div class="preview-section" id="previewSection" style="display: none;">
+                <h3>📋 Preview URL</h3>
+                <div class="preview-url" id="previewUrl"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                🔗 Generate & Go to URL
+            </button>
+        </form>
+    </div>
+
+    <script>
+        class CampaignBuilder {
+            constructor() {
+                this.params = [];
+                this.paramIdCounter = 0;
+                
+                this.form = document.getElementById('campaignForm');
+                this.baseUrlInput = document.getElementById('baseUrl');
+                this.paramsContainer = document.getElementById('paramsContainer');
+                this.emptyState = document.getElementById('emptyState');
+                this.previewSection = document.getElementById('previewSection');
+                this.previewUrl = document.getElementById('previewUrl');
+                this.addParamBtn = document.getElementById('addParamBtn');
+
+                this.init();
+            }
+
+            init() {
+                // Add initial parameter row
+                this.addParameter();
+
+                // Event listeners
+                this.addParamBtn.addEventListener('click', () => this.addParameter());
+                this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+                this.baseUrlInput.addEventListener('input', () => this.updatePreview());
+
+                // Update preview on any input change
+                this.paramsContainer.addEventListener('input', () => this.updatePreview());
+            }
+
+            addParameter() {
+                const paramId = this.paramIdCounter++;
+                
+                const paramRow = document.createElement('div');
+                paramRow.className = 'param-row';
+                paramRow.dataset.paramId = paramId;
+                paramRow.innerHTML = `
+                    <input 
+                        type="text" 
+                        class="param-key" 
+                        placeholder="Parameter name (e.g., utm_source)"
+                        data-param-id="${paramId}"
+                    >
+                    <input 
+                        type="text" 
+                        class="param-value" 
+                        placeholder="Value (e.g., google)"
+                        data-param-id="${paramId}"
+                    >
+                    <button 
+                        type="button" 
+                        class="btn btn-danger remove-param-btn" 
+                        data-param-id="${paramId}"
+                        title="Remove parameter"
+                    >
+                        ✕
+                    </button>
+                `;
+
+                this.paramsContainer.appendChild(paramRow);
+                
+                // Add remove listener
+                const removeBtn = paramRow.querySelector('.remove-param-btn');
+                removeBtn.addEventListener('click', () => this.removeParameter(paramId));
+
+                this.updateEmptyState();
+                this.updatePreview();
+            }
+
+            removeParameter(paramId) {
+                const paramRow = this.paramsContainer.querySelector(`[data-param-id="${paramId}"]`);
+                if (paramRow) {
+                    // Add removing class for animation
+                    paramRow.classList.add('removing');
+                    
+                    // Wait for animation to complete before removing
+                    setTimeout(() => {
+                        paramRow.remove();
+                        this.updateEmptyState();
+                        this.updatePreview();
+                    }, 300);
+                }
+            }
+
+            updateEmptyState() {
+                const hasParams = this.paramsContainer.children.length > 0;
+                this.emptyState.style.display = hasParams ? 'none' : 'block';
+            }
+
+            getParameters() {
+                const params = [];
+                const paramRows = this.paramsContainer.querySelectorAll('.param-row');
+                
+                paramRows.forEach(row => {
+                    const key = row.querySelector('.param-key').value.trim();
+                    const value = row.querySelector('.param-value').value.trim();
+                    
+                    if (key && value) {
+                        params.push({ key, value });
+                    }
+                });
+                
+                return params;
+            }
+
+            buildUrl() {
+                const baseUrl = this.baseUrlInput.value.trim();
+                if (!baseUrl) return '';
+
+                const params = this.getParameters();
+                if (params.length === 0) return baseUrl;
+
+                // Build query string
+                const queryString = params
+                    .map(p => `${encodeURIComponent(p.key)}=${encodeURIComponent(p.value)}`)
+                    .join('&');
+
+                // Check if base URL already has query parameters
+                const separator = baseUrl.includes('?') ? '&' : '?';
+                
+                return `${baseUrl}${separator}${queryString}`;
+            }
+
+            updatePreview() {
+                const url = this.buildUrl();
+                
+                if (url && url !== this.baseUrlInput.value.trim()) {
+                    this.previewSection.style.display = 'block';
+                    this.previewUrl.textContent = url;
+                } else if (url) {
+                    this.previewSection.style.display = 'block';
+                    this.previewUrl.textContent = url;
+                } else {
+                    this.previewSection.style.display = 'none';
+                }
+            }
+
+            handleSubmit(e) {
+                e.preventDefault();
+                
+                const finalUrl = this.buildUrl();
+                
+                if (!finalUrl) {
+                    alert('Please enter a valid website URL');
+                    return;
+                }
+
+                // Validate URL
+                try {
+                    new URL(finalUrl);
+                } catch (err) {
+                    alert('Please enter a valid URL format (e.g., https://example.com)');
+                    return;
+                }
+
+                // Redirect to the constructed URL
+                console.log('Navigating to:', finalUrl);
+                window.location.href = finalUrl;
+            }
+        }
+
+        // Initialize the campaign builder when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new CampaignBuilder();
+        });
+    </script>
+</body>
+</html>
+
